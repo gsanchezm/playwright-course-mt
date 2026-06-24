@@ -31,12 +31,12 @@ export class LoginPage extends BasePage{
     }
 
     //-------------------------- Actions -------------------------------------------------------
-    async navigateTo(): Promise<void>{
-        await this.page.goto(this.path);
+    navigateTo(): this{
+        return this.step( () => this.page.goto(this.path));
     }
 
-    async selectMarket(code: CountryCode): Promise<void>{
-        await this.marketButton(code).click();
+    selectMarket(code: CountryCode): this {
+        return this.step(() => this.marketButton(code).click());
     }
 
     // para los siguientes métodos usamos las 2 combinaciones asegurandonos que las 2 funcionan
@@ -60,6 +60,24 @@ export class LoginPage extends BasePage{
 
         await this.selectMarket(code);
         await this.signInButton.click();
+    }
+
+
+    //--------------------------- Fluent Interface ------------------------------------------------------
+    loginIn(username: string): this{
+        return this.typeInput(this.txtUsername, username);
+    }
+
+    withPassword(password: string): this {
+        return this.typeInput(this.txtPassword, password);
+    }
+
+    andMaket(code: CountryCode): this{
+        return this.selectMarket(code);
+    }
+
+    login(): this{
+        return this.step(() => this.tid(this.btnSignIn).click());
     }
 
     //------------------------ Assertions -------------------------------
