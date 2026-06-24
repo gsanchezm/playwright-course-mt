@@ -23,7 +23,6 @@ export class BasePage{
     // Dont Repeat Yourself - DRY
     protected typeInput(locator: string, text: string): this {
         return this.step(async () =>{
-            
             await this.tid(locator).clear();
             await this.tid(locator).fill(text);
         })
