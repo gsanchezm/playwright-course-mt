@@ -14,15 +14,29 @@ if (!standardUser) {
     throw new Error("data/users.json doesn't include a username called standard_user");
 }
 
-test.describe("POM - Login per market", () => {
+test.describe("POM - Fluent Interface", () => {
+    test("Fluent", async ({ page }) => {
+        const loginPage = new LoginPage(page);
+
+        await loginPage
+        .navigateTo()
+        .loginIn(standardUser.username)
+        .withPassword(standardUser.password)
+        .login();
+
+        await loginPage.expectUrlContains(/\/catalog/);
+    });
+});
+
+ test.describe("POM - Login per market", () => {
     for (const market of markets) {
         // String Interpolation
         test(`TC-${market.code} - logitn + catalog in market ${market.code}`, { tag: "@smoke" }, async ({ page }) => {
             const loginPage = new LoginPage(page);
-
+            
             await loginPage.navigateTo();
             await loginPage.loginAs(standardUser, market.code);
             await loginPage.expectUrlContains(/\/catalog/);
-        })
+        });
     }
-})
+}); 
