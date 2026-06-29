@@ -14,15 +14,12 @@ if (!standardUser) {
     throw new Error("data/users.json doesn't include a username called standard_user");
 }
 
-test.describe("POM - Fluent Interface", () => {
-    test("Fluent", async ({ page }) => {
+test.describe("POM - Login estándar", () => {
+    test("login estándar", async ({ page }) => {
         const loginPage = new LoginPage(page);
 
-        await loginPage
-        .navigateTo()
-        .loginIn(standardUser.username)
-        .withPassword(standardUser.password)
-        .login();
+        await loginPage.navigateTo();
+        await loginPage.loginAsUser(standardUser);
 
         await loginPage.expectUrlContains(/\/catalog/);
     });
@@ -61,7 +58,7 @@ test.describe("POM — uso de acciones granulares", () => {
     const loginPage = new LoginPage(page);
     const catalogPage = new CatalogPage(page);
 
-    await loginPage.goto();
+    await loginPage.navigateTo();
     await loginPage.selectMarket("MX");
     await loginPage.loginAs(standardUser);
 

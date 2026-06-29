@@ -6,11 +6,9 @@ export class CatalogPage extends BasePage {
         return this.page.locator("[data-testid^='pizza-card-']");
     }
 
-    waitForCatalog(): this {
-        return this.step(async () => {
-            await this.page.waitForURL(/\/catalog/);
-            await expect(this.pizzaCards.first()).toBeVisible();
-        });
+    async waitForCatalog(): Promise<void> {
+        await this.page.waitForURL(/\/catalog/);
+        await expect(this.pizzaCards.first()).toBeVisible();
     }
 
     async expectLoaded(): Promise<void> {

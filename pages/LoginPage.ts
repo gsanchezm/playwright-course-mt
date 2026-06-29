@@ -1,19 +1,18 @@
 import { expect, type Locator } from '@playwright/test';
 import { BasePage } from "./BasePage";
-import { CountryCode, User } from "../types";
+import type { CountryCode, User } from "../types";
 
 export class LoginPage extends BasePage {
     readonly path = "/";
 
-    // --------------- Arrange --------------------------------------------
-    //String locator
-    // Se puede con esta forma, donde el locator es un string
+    // --------------- Locators (test ids) --------------------------------
+    // String locator: el locator es un string (test id)
     private txtUsername: string = "username";
-    private txtPassword: string = "password"
-    private btnMarket: string = "market-"
-    private btnSignIn: string = "login-button"
+    private txtPassword: string = "password";
+    private btnMarket: string = "market-";
+    private btnSignIn: string = "login-button";
 
-    // Se puede esta forma usando getters y setter
+    // También se puede con getters que devuelven el Locator
     private get usernameInput(): Locator {
         return this.tid(this.txtUsername);
     }
@@ -31,19 +30,18 @@ export class LoginPage extends BasePage {
     }
 
     //-------------------------- Actions -------------------------------------------------------
-    navigateTo(): this {
-        return this.step(() => this.page.goto(this.path));
+    async navigateTo(): Promise<void> {
+        await this.page.goto(this.path);
     }
 
-    selectMarket(code: CountryCode): this {
-        return this.step(() => this.marketButton(code).click());
+    async selectMarket(code: CountryCode): Promise<void> {
+        await this.marketButton(code).click();
     }
 
-    // para los siguientes métodos usamos las 2 combinaciones asegurandonos que las 2 funcionan
+    // Combinamos las 2 formas (typeInput y getters) para asegurarnos de que ambas funcionan
     async loginAs(user: User, code?: CountryCode): Promise<void> {
         await this.typeInput(this.txtUsername, user.username);
         await this.typeInput(this.txtPassword, user.password);
-        //await this.tid(this.btnSignIn).click();
 
         if (code) {
             await this.selectMarket(code);
@@ -69,23 +67,6 @@ export class LoginPage extends BasePage {
         await this.selectMarket(code);
         await this.loginAsUser(user);
         await this.waitForUrl(/\/catalog/);
-    }
-
-    //--------------------------- Fluent Interface ------------------------------------------------------
-    loginIn(username: string): this {
-        return this.typeInput(this.txtUsername, username);
-    }
-
-    withPassword(password: string): this {
-        return this.typeInput(this.txtPassword, password);
-    }
-
-    andMaket(code: CountryCode): this {
-        return this.selectMarket(code);
-    }
-
-    login(): this {
-        return this.step(() => this.tid(this.btnSignIn).click());
     }
 
     //------------------------ Assertions -------------------------------
