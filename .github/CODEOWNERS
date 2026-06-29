@@ -1,0 +1,7 @@
+# CODEOWNERS — Gobernanza de revisiones
+#
+# Cualquier cambio en el repositorio requiere la aprobacion de @gsanchezm
+# antes de poder hacer merge a la rama protegida (main).
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+* @gsanchezm
