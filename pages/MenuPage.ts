@@ -45,8 +45,8 @@ export class MenuPage extends BasePage {
     await this.page.getByTestId(this.lnkProfile).click();
   }
 
-  logout(): this {
-    return this.step(() => this.page.getByTestId(this.btnLogout).click());
+  async logout(): Promise<void> {
+    await this.page.getByTestId(this.btnLogout).click();
   }
 
   async getCartCount(): Promise<string> {
