@@ -49,6 +49,9 @@
     "playwright.config.ts",
     "module-*/**/*.ts",
     "types/**/*.ts",
-    "types/**/*.d.ts"
+    "types/**/*.d.ts",
+    "helpers/**/*.ts",
+    "tests/**/*.ts",
+    "pages/**/*.ts"
   ]
 }

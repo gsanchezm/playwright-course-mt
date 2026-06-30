@@ -8,13 +8,14 @@ import { defineConfig, devices } from '@playwright/test';
  import path from 'path';
  dotenv.config({ path: path.resolve(__dirname, '.env') }); */
  import "dotenv/config";
+ const STORAGE_STATE = ".auth/user.json";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
   testDir: ".",
-  testMatch: [/module-.*\/.*\.spec\.ts/, /tests\/.*\.spec\.ts/],
+  testMatch: [/module-.*\/.*\.(spec|setup)\.ts/, /tests\/.*\.spec\.ts/],
   //'./tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -49,8 +50,14 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: "setup",
+      testMatch: /tests\/setup\/.setup\.ts/,
+    },
+    {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], storageState: STORAGE_STATE },
+      dependencies: ["setup"],
+      testIgnore: [/tests\/setup\/.*/]
     },
 
     /* {
